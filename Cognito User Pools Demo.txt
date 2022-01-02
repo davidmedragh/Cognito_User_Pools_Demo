@@ -1,0 +1,235 @@
+Hello, Cloud Gurus
+and welcome to this lecture
+where we're going to get our hands dirty
+using Cognito user pools.
+So, first of all
+we're going to create a Cognito user pool.
+We'll then configure the signup and sign in functionality
+that is built into Cognito.
+We're gonna sign up a user
+and test that the signup page works
+and if it's successful then Cognito
+should return a JWT Token
+that we can view in our browser.
+So if you'd like to join me in the console,
+we'll get started.
+So here I am in the AWS console
+and you'll find Cognito under security,
+identity and compliance.
+So just click on Cognito,
+click on Manage User Pools
+and Create a User Pool.
+So the first thing we need to do is give it a name
+and I'm just gonna call it testpool
+click on review defaults,
+and we can just keep to all of the defaults
+that you see here.
+And there's various things that you can change
+and you can configure for yourself
+things like the password length, the policy
+you can enable multifactor authentication
+but we're gonna stick with all the defaults
+and I'm gonna go ahead and click Create Pool.
+So that has been created successfully
+and I'm just gonna scroll down
+to app clients and click on Add App Clients.
+And the app client is what we used to call
+the various APIs on our behalf.
+For example, the API to register a new user
+or to sign in a user.
+So click on Add App Client
+and we're gonna give it a name.
+I'm gonna call it mytestclients
+and we're going to accept all the defaults
+and I just want you to scroll down
+and make sure that generate client secret is selected
+and then hit Create App Client.
+And now we need to configure the app client.
+So just click on App Client Settings
+and we need to enable an identity provider
+for our application client.
+So just select Cognito User Pool
+and then next thing we need to do is
+we need to configure callback URLs
+and a callback URL is really,
+it's just gonna be the URL
+that your users are gonna be redirected to
+after they have successfully signed in or signed up
+just for this demo
+we're gonna use https://example.com.
+So it's just gonna be a dummy website,
+but in reality
+if you have your own web application
+you could use whichever website
+you want your users to land on
+once they have signed into the application.
+We don't need to configure a sign out URL
+so I'm just gonna leave that blank for now.
+And then under the OAuth 2.0 section
+I'm going to select the first two options.
+So Authorization Code Grant.
+So that is gonna configure Cognito
+to give you back an authorization code,
+which you can provide back
+to your backend authorization process
+and the implicit grant
+that just gives you the JWT Token.
+So that means when we go to test the configuration
+we'll be able to view that JWT Token
+and under allowed OAuth scopes
+I'm just gonna select everything.
+So the phone and email that is just for user verification.
+So when you first sign up
+they'll send you an email
+just to get you to verify your email is correct.
+And then I'm gonna select these three as well
+and if you're not familiar with OAuth
+it is simply an open standard authentication framework
+and by selecting all of these OAuth scopes
+this is just gonna grant access to the Cognito API.
+So all of the API operations like the sign in and sign up
+and also it's gonna give us access to the JWT Token
+that Cognito will return.
+But you can learn more about the OAuth flows and scopes
+if you click on this link here,
+just open it up in a new tab
+and it just takes you straight to the Cognito documentation.
+So you can read all about that at your leisure
+but it is out of scope for the exam
+you do not need to learn it for the exam.
+So I'm just gonna go ahead
+and click save changes
+then head over to domain name,
+and we need to
+create a domain prefix for Amazon Cognito domain
+and you can just make one up.
+I'm just gonna call it acgtest
+click on check availability
+and if it's available
+then we can go ahead and Save Changes.
+And this just applies this domain at prefix
+to the Cognito domain that it's creating for you.
+And then the last thing I'm gonna do is
+UI customization.
+So you can customize Cognito
+or the look and feel of the sign in and sign up page
+as you want.
+So you can add a logo,
+you can customize the labels, the input fields
+text descriptions, banners, et cetera, et cetera.
+So I'm just going to add a logo to our up page.
+I'm just gonna add the Cloud Guru logo
+and I've included an ACG logo file
+in the resources section of the course.
+So if you download that file to your local machine
+you will be able to upload it here.
+So then scroll down and hit Save Changes.
+So now we have configured everything we need for Cognito.
+So Cognito is gonna create a built in sign up
+and sign in page based on our configuration.
+So let's test it and see if it's working.
+So the first thing I'm going to do is go to app integration
+grab my Cognito domain name,
+copy that
+come to a new tab
+and just paste that.
+But we need to add a few additional parameters as well
+in order to test this properly.
+So I'm just gonna type in /login?response_type=token
+because we want it to respond with a token then
+&amp;client_id= now going to come back to Cognito
+and go to my app client settings
+grab my client ID.
+And don't worry,
+there's quite a lot to type into the browser here,
+but that will all be provided
+in the resources section of the course.
+So that the next thing we need to do is &amp;redirect_uri=
+and I'm just gonna copy
+and paste it from my client's settings
+just to make sure I spell it exactly the same.
+You want to make sure this is really the same
+because if you accidentally type it differently
+it's not going to work.
+And then I'm gonna hit enter.
+And if that's worked correctly for you
+this is what you should see
+and this is the sign up
+and sign in page that Cognito has created for us
+and it's all completely built in
+we don't have to write any of the code for this.
+It's just all based on the options
+that we configured within our user pool
+and when we set up our app client.
+So we don't have any users yet in our user pool
+so we need to create a new user.
+So I'm just going to create a new account
+and I'm gonna call it Faye,
+add my email address in, create a password
+and you'll see, it's making sure
+that we adhere to the password policy,
+then hit sign up
+and because we selected to send a verification code
+by email.
+So it's going to send a verification code
+to the email address
+that I've used to sign up with.
+So I'm just gonna go and check my email now
+and there's my email with my verification code.
+So I'm just gonna copy that.
+Come back to my sign in page,
+paste in the verification code
+and click confirm account.
+So there we are, we've signed in
+and it's taken me to the test domain, the example domain
+and if you look at the top of your browser
+you'll see the ID token.
+So the JWT Token that Cognito has generated for you.
+Now, if we go back to our user pools
+go into users and groups,
+hit refresh
+you should see the user that we've just created.
+And within Cognito, you can also set up groups as well.
+So you can go in, you can create a group
+and you can also select an identity access management role
+as well.
+So for example, you could select a role
+to give access to S3,
+create that group
+and then you can actually add users in.
+So you can add your Cognito users into that group.
+So you can actually build out groups of users
+within your Cognito directory
+and you can assign them an identity access
+management role associated with a specific Cognito group.
+So these roles can then be used to access AWS services
+like files in S3, DynamoDB tables,
+that kind of thing.
+And if we move down to Federation
+and click on Identity Providers
+you'll find the different providers that Cognito
+can federate with on your behalf as well.
+So you've got Facebook, Google, Amazon, SAML
+which refers to any, SAML compliant directory
+so it could be active directory, for example
+and also OpenID.
+And configuring all of this is really
+beyond the scope of the exam.
+The main thing you really need to know is what is Cognito
+at a high level.
+So just remember it allows you to manage user identity
+for your mobile and web applications.
+It integrates with Facebook, Google, Amazon
+and other identity providers
+and is the recommended approach for users sign up
+and sign in for mobile applications.
+So that is the end of this lab.
+If you would like to delete all of your Cognito setup
+the first thing you need to do is delete your domain.
+So just go ahead and delete the domain
+and then once you've done that
+it will allow you to go to general settings
+and then you can delete your pool as well.
+So that's the end of this lecture
+if you have any questions, please let me know.
+If not, feel free to move on to the next lecture thank you.
